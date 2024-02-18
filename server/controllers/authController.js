@@ -1,5 +1,5 @@
 import { User } from "../models/User.js";
-import { comparePassword, hashPassword } from "../utils/authUtils.js";
+// import { comparePassword, hashPassword } from "../utils/authUtils.js";
 import jwt from 'jsonwebtoken';
 
 export const registerController=async(req,res)=>{
@@ -28,8 +28,8 @@ export const registerController=async(req,res)=>{
         if(existingUser){
             return res.status(200).send({success:false,message:'Email already taken!'});
         }
-        const hashedPassword=await hashPassword(password);
-        const user=await new User({username,email,password:hashedPassword,phone,address,answer}).save();
+        // const hashedPassword=await hashPassword(password);
+        const user=await new User({username,email,password,phone,address,answer}).save();
         res.status(201).send({
             success:true,
             message:'User registered successfully!',
@@ -57,13 +57,13 @@ export const loginController=async(req,res)=>{
                 success:false,message:'Email is not registered!',
             });
         }
-        const validPass=await comparePassword(password,user.password);
-        if(!validPass){
-            return res.status(200).send({
-                success:false,
-                message:'Invalid Password',
-            })
-        }
+        // const validPass=await comparePassword(password,user.password);
+        // if(!validPass){
+        //     return res.status(200).send({
+        //         success:false,
+        //         message:'Invalid Password',
+        //     })
+        // }
         const token=jwt.sign({_id:user._id},process.env.JWT_SECRET,{
             expiresIn:'1hr',
         });
